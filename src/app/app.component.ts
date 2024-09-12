@@ -1,13 +1,24 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { AuthService } from './services/authservice.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [ RouterModule, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
-  title = 'AngularDash2';
+  constructor(private authService: AuthService, private router: Router) {}
+
+  isLoggedIn() {
+    return !!this.authService.getToken()
+  }
+
+  onLogout() {
+    this.authService.logout()
+    this.router.navigate(['/login'])
+  }
 }

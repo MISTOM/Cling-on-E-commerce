@@ -7,33 +7,30 @@
           <img [src]="product.thumbnail" class="card-img-top" alt="{{ product.title }}" />
           
           <div class="card-body">
-            <!-- Product Title -->
             <h5 class="card-title">{{ product.title }}</h5>
-            
-            <!-- Product Description -->
+
             <p class="card-text">
               {{ product.description | slice:0:100 }}...
             </p>
-  
-            <!-- Product Price -->
+
             <p class="fw-bold">
               {{ product.price | currency }}
             </p>
   
-            <!-- Availability -->
+
             <span class="badge bg-warning text-dark">
               {{ product.availabilityStatus }}
             </span>
   
-            <!-- Stock Info -->
             <p class="mt-2">
               <small class="text-muted">
                 Stock: {{ product.stock }} | Rating: {{ product.rating }}
               </small>
             </p>
           </div>
+          <a [routerLink]="['/products', product.id]" class="btn btn-primary">View Details</a>
   
-          <!-- Reviews Summary (Optional) -->
+
           <div class="card-footer">
             <p><strong>Top Review:</strong></p>
             <p *ngIf="product.reviews.length > 0">

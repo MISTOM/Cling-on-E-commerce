@@ -1,46 +1,53 @@
+<!-- product-detail.component.html -->
 <div class="container mt-5">
-    <div class="card">
-      <div class="card-body">
-        <h2 class="card-title">{{ product?.title }}</h2>
-        <p class="card-text">{{ product?.description }}</p>
-        <p><strong>Category:</strong> {{ product?.category }}</p>
+    <div class="row">
+      <div class="col-md-6">
+        <!-- Display product images -->
+        <div class="product-images">
+          <img [src]="product?.thumbnail" alt="{{ product?.title }}" class="img-fluid mb-3">
+        </div>
+      </div>
+      <div class="col-md-6">
+        <h2>{{ product?.title }}</h2>
+        <p>{{ product?.description }}</p>
         <p><strong>Price:</strong> ${{ product?.price }}</p>
-        <p><strong>Rating:</strong> {{ product?.rating }} / 5</p>
+        <p><strong>Discount:</strong> {{ product?.discountPercentage }}%</p>
+        <p><strong>Stock:</strong> {{ product?.stock > 0 ? product?.stock : 'Out of Stock' }}</p>
+        <p><strong>Category:</strong> {{ product?.category }}</p>
       </div>
     </div>
   
-    <!-- Display reviews -->
+    <!-- Reviews Section -->
     <div class="mt-4">
-      <h4>Reviews:</h4>
+      <h4>Reviews</h4>
       <ul class="list-group">
-        <li class="list-group-item" *ngFor="let review of product?.reviews">
+        <li *ngFor="let review of product?.reviews" class="list-group-item">
           <strong>{{ review.reviewerName }}:</strong> {{ review.comment }} (Rating: {{ review.rating }})
         </li>
       </ul>
     </div>
   
-    <!-- Comment Form -->
-    <div class="mt-5">
+    <!-- Comment Form (conditionally visible) -->
+    <div class="mt-5" *ngIf="isLoggedIn()">
       <h4>Add a Comment</h4>
       <form [formGroup]="commentForm" (ngSubmit)="onComment()">
         <div class="mb-3">
           <label for="rating" class="form-label">Rating</label>
           <input type="number" class="form-control" id="rating" formControlName="rating" min="1" max="5" placeholder="Rate 1-5">
-          <div *ngIf="commentForm.get('rating')?.invalid && commentForm.get('rating')?.touched" class="text-danger">
-            Rating is required
-          </div>
         </div>
   
         <div class="mb-3">
           <label for="comment" class="form-label">Comment</label>
           <textarea id="comment" class="form-control" formControlName="comment" rows="3"></textarea>
-          <div *ngIf="commentForm.get('comment')?.invalid && commentForm.get('comment')?.touched" class="text-danger">
-            Comment is required
-          </div>
         </div>
   
         <button type="submit" class="btn btn-primary" [disabled]="commentForm.invalid">Submit Comment</button>
       </form>
+    </div>
+  
+    <!-- Login Prompt if not logged in -->
+    <div *ngIf="!isLoggedIn()" class="alert alert-warning mt-5">
+    Please <a [routerLink]="'/login'">login</a> to add a comment.
     </div>
   </div>
   

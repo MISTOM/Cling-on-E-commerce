@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
           next: (response) => {
             console.log('Login successful', response);
             this.authService.storeToken(response.token);
-            // Navigate to home page or do other post-login actions
+            this.router.navigate(['/products'])
           },
           error: (error) => {
             console.error('Login failed', error);

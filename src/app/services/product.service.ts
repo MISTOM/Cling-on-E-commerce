@@ -20,6 +20,18 @@ export class ProductService {
     return this.http.get(`${this.baseUrl}/products/${productId}`)
   }
 
+  addProduct(product: any): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/products/add`, product);
+  }
+
+  updateProduct(id: number, product: any): Observable<any> {
+    return this.http.put<any>(`${this.baseUrl}/products/${id}`, product);
+  }
+
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.baseUrl}/products/${id}`);
+  }
+
   // Add a comment to a specific product
   addComment(productId: number, commentData: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/products/${productId}/comments/add`, commentData);

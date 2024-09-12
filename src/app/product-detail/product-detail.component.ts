@@ -2,12 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { AuthService } from '../services/authservice.service';
 
 @Component({
   selector: 'app-product-detail',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.css'
 })
@@ -19,6 +20,7 @@ export class ProductDetailComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
+    private authService: AuthService,
     private route: ActivatedRoute
   ) { }
 
@@ -42,7 +44,8 @@ export class ProductDetailComponent implements OnInit {
     this.productService.getProductById(id).subscribe(
       {
         next: (response) => {
-          this.product = response.product;
+          console.log('Product details loaded', response);
+          this.product = response;
         },
         error: (error) => {
           console.error('Error loading product details', error);
@@ -66,6 +69,10 @@ export class ProductDetailComponent implements OnInit {
         }
       )
     }
+  }
+
+  isLoggedIn(){
+    return !!this.authService.getToken()
   }
 
 }
