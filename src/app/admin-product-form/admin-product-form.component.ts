@@ -31,13 +31,28 @@ export class AdminProductFormComponent {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      this.productId = params['id'];
-      if (this.productId) {
-        this.isEditMode = true;
-        this.productService.getProductById(this.productId).subscribe(product => {
-          this.productForm.patchValue(product);
-        });
+    this.route.params.subscribe({
+
+      next: (params) => {
+        this.productId = params['id'];
+        if (this.productId) {
+          this.isEditMode = true;
+          this.productService.getProductById(this.productId).subscribe({
+
+            next: (response) => {
+              this.productForm.patchValue(response);
+            },
+
+            error: (error) => {
+              console.error('Error loading product', error);
+            }
+
+          });
+        }
+      },
+
+      error: (error) => {
+        console.error('Error loading route params', error);
       }
     });
   }

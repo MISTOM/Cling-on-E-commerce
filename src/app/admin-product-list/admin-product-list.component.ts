@@ -17,9 +17,16 @@ export class AdminProductListComponent {
   constructor(private productService: ProductService, private router: Router) { }
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe((data: any) => {
-      this.products = data;
-    });
+    this.productService.getProducts().subscribe(
+      {
+        next: (response) => {
+          this.products = response.products
+        },
+        error: (error) => {
+          console.error('Error loading products', error)
+        }
+      }
+    )
   }
 
   editProduct(productId: number) {
@@ -28,9 +35,16 @@ export class AdminProductListComponent {
 
   deleteProduct(productId: number) {
     if (confirm('Are you sure you want to delete this product?')) {
-      this.productService.deleteProduct(productId).subscribe(() => {
-        this.products = this.products.filter(p => p.id !== productId);
-      });
+      this.productService.deleteProduct(productId).subscribe(
+        {
+          next: (response) => {
+            this.products = this.products.filter(product => product.id !== productId)
+          },
+          error: (error) => {
+            console.error('Error deleting product', error)
+          }
+        }
+      )
     }
   }
 
