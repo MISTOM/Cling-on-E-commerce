@@ -2,11 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services/authservice.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   //create a form group bind to the form
   loginForm!: FormGroup;
+  submitted = false;
 
   constructor(
     private fb: FormBuilder,
@@ -31,6 +33,8 @@ export class LoginComponent implements OnInit {
 
 
   onLogin() {
+    this.submitted = true;
+
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe(
         {
@@ -41,7 +45,6 @@ export class LoginComponent implements OnInit {
           },
           error: (error) => {
             console.error('Login failed', error);
-            // Handle login error (show message to user, etc.)
           },
           complete: () => {
             console.log('Login attempt completed');

@@ -1,22 +1,38 @@
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2>Login</h2>
-            <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-            <div class="mb-3">
-                <label for="username">Username</label>
-                <input type="text" formControlName="username" class="form-control"  placeholder="Enter username">
-            </div>
-            <div class="mb-3">
-                <label for="password">password</label>
-                <input type="password" formControlName="password" class="form-control"  placeholder="Enter password">
-            </div>
-
-            <button type="submit" class="btn btn-primary" [disabled]="loginForm.invalid">Login</button>
-            
-            </form>
+    <h2>Login</h2>
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" novalidate>
+      <div class="mb-3">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          formControlName="username"
+          [ngClass]="{'is-invalid': submitted && loginForm.get('username')?.invalid}"
+        />
+        <div *ngIf="submitted && loginForm.get('username')?.errors?.['required']" class="invalid-feedback">
+          Username is required.
         </div>
-
-    </div>
-
-</div>
+      </div>
+  
+      <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          [ngClass]="{'is-invalid': submitted && loginForm.get('password')?.invalid}"
+        />
+        <div *ngIf="submitted && loginForm.get('password')?.errors?.['required']" class="invalid-feedback">
+          Password is required.
+        </div>
+      </div>
+  
+      <button type="submit" class="btn btn-primary">Login</button>
+    </form>
+    <button class="btn btn-link">
+      <a href="/register">Register</a>
+      </button>
+  </div>
+  
